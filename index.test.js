@@ -48,6 +48,19 @@ test('renders a configured sample question immediately', () => {
   assert.equal(page.button.disabled, false);
 });
 
+test('loads the complete question set without duplicate entries', () => {
+  const questions = JSON.parse(
+    vm.runInNewContext(`${questionsSource}\nJSON.stringify(questions);`),
+  );
+  assert.equal(questions.length, 44);
+  assert.equal(new Set(questions).size, 44);
+  assert.equal(questions[0], 'Wie sieht für dich ein perfekter freier Tag aus?');
+  assert.equal(
+    questions.at(-1),
+    'Wenn du dein Leben bisher mit einem Buchtitel beschreiben müsstest, welcher wäre es?',
+  );
+});
+
 test('initial selection covers both random boundaries', () => {
   for (const [random, expected] of [[0, 'First'], [0.999999, 'Last']]) {
     const page = openPage(['First', 'Middle', 'Last'], [random]);
@@ -86,7 +99,7 @@ test('one question is displayed with the button disabled', () => {
 
 test('an empty question set displays a message with the button disabled', () => {
   const page = openPage([]);
-  assert.equal(page.question.textContent, 'No questions configured yet.');
+  assert.equal(page.question.textContent, 'Es sind noch keine Fragen hinterlegt.');
   assert.equal(page.button.disabled, true);
 });
 

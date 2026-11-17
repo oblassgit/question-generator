@@ -4,7 +4,7 @@ let currentIndex = -1;
 
 function showRandomQuestion() {
   if (questions.length === 0) {
-    questionElement.textContent = 'No questions configured yet.';
+    questionElement.textContent = 'Es sind noch keine Fragen hinterlegt.';
     return;
   }
 
